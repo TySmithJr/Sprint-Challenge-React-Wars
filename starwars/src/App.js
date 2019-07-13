@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
+import axios from "axios";
+import CharList from "./components/CharList"
+
 
 const App = () => {
   // Try to think through what state you'll need for this app before starting. Then build out
@@ -9,11 +12,40 @@ const App = () => {
   // side effect in a component, you want to think about which state and/or props it should
   // sync up with, if any.
 
-  return (
+const [charInfo, setCharInfo] = useState([])
+        
+
+
+
+useEffect (  () => {
+   
+  axios.get('https://swapi.co/api/people/')
+  .then((response) => {
+    console.log("response", response);
+    setCharInfo(response.data.results);
+   
+    // setState(response.data.results);
+  })
+   
+  .catch(error => console => (error))
+
+    console.log("this is what charInfo;", charInfo)
+}, []);
+
+
+    
+ 
+
+return (
     <div className="App">
-      <h1 className="Header">React Wars</h1>
+     <h1>app render</h1>
+     {charInfo.length? <CharList charList= {charInfo}/>: <h1>loading</h1>} 
+
     </div>
+
   );
 }
+
+console.log(axios);
 
 export default App;
